@@ -1,0 +1,240 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>NMultiSelect 1.5.2</title>
+    <link href="styles/style.1.5.0.css" rel="stylesheet" type="text/css" />
+    <link href="styles/page.css" rel="stylesheet" type="text/css" />
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+
+    <script type="text/javascript" src="http://code.jdempster.com/jQuery.DisableTextSelect/jquery.disable.text.select.pack.js"></script>
+
+    <script type="text/javascript" src="http://nmultiselect.ndesoft.dk/scripts/jquery.nmultiselect.1.5.2.min.js"></script>
+
+    <script type="text/javascript">
+        var defaultConf;
+        var customDimensions;
+        var customTexts;
+        var copy;
+        var slowFading;
+        var customName;
+        var selLimit; 
+        
+        function _getValues()
+        {
+            var container = $('#getValues');
+            if (window.location.search.length > 0) {
+                var queryKeyValues = window.location.search.substr(1).split('&');
+                for (var i = 0; i < queryKeyValues.length; i++) {
+                    var keyValue = queryKeyValues[i].split('=');
+                    var name = keyValue[0];
+                    var values = keyValue[1].replace(/%2C/g, ',').split(',');
+
+                    var item = $('<li/>');
+                    item.text(name);
+                    container.append(item);
+                    var valCont = $("<ul/>");
+                    container.append(valCont);
+                    for (var y = 0; y < values.length; y++) {
+                        var val = $('<li/>');
+                        val.text(values[y]);
+                        valCont.append(val);
+                    }
+                } 
+            }
+        }
+        function updateSelected(item, selected)
+        {
+            var ul = $('#' + item + ' > ul');
+            ul.html('');
+            for (var i = 0; i < selected.length; i++)
+            {
+                var val = $('<li/>');
+                val.text(selected[i].Text);
+                ul.append(val);
+            }
+        }
+
+        $(document).ready(
+			function()
+			{
+
+			    // Default:
+			    defaultConf = $("#nmultiselectboxes").NMultiSelect({ Title: "Default configuration" });
+			    defaultConf.AddItemToList("1-1", "Value 1", false);
+			    defaultConf.AddItemToList("2-1", "Value 2", false);
+			    defaultConf.AddItemToList("3-1", "Value 3", true);
+			    defaultConf.AddItemToList("4-1", "Value 4", true);
+			    defaultConf.AddItemToList("5-1", "Denmark", false);
+			    defaultConf.AddItemToList("6-1", "Germany", true);
+			    defaultConf.AddItemToList("7-1", "French toast", false);
+
+			    defaultConf.SelectionChanged(function(data)
+			    {
+			        updateSelected("nmulti1", data.Selection);
+			    },true);
+
+			    // Custom dimensions:
+			    customDimensions = $("#nmultiselectboxes").NMultiSelect({ Height: 300, Width: 200, Title: "Custom dimensions" });
+			    customDimensions.AddItemToList("1-1", "Value 1", false);
+			    customDimensions.AddItemToList("2-1", "Value 2", false);
+			    customDimensions.AddItemToList("3-1", "Value 3", true);
+			    customDimensions.AddItemToList("4-1", "Value 4", true);
+			    customDimensions.AddItemToList("5-1", "Denmark", false);
+			    customDimensions.AddItemToList("6-1", "Germany", true);
+			    customDimensions.AddItemToList("7-1", "French toast", false);
+
+			    customDimensions.SelectionChanged(function(data)
+			    {
+			        updateSelected("nmulti2", data.Selection);
+			    }, true);
+
+			    // Custom texts:
+			    customTexts = $("#nmultiselectboxes").NMultiSelect({ FilterText: "Filter here", AvailableText: "Put these:", SelectedText: "To here:", Title: "Custom texts" });
+			    customTexts.AddItemToList("1-1", "Value 1", false);
+			    customTexts.AddItemToList("2-1", "Value 2", false);
+			    customTexts.AddItemToList("3-1", "Value 3", true);
+			    customTexts.AddItemToList("4-1", "Value 4", true);
+			    customTexts.AddItemToList("5-1", "Denmark", false);
+			    customTexts.AddItemToList("6-1", "Germany", true);
+			    customTexts.AddItemToList("7-1", "French toast", false);
+
+			    customTexts.SelectionChanged(function(data)
+			    {
+			        updateSelected("nmulti3", data.Selection);
+			    }, true);
+
+			    // Copy
+			    copy = $("#nmultiselectboxes").NMultiSelect({ Move: false, Title: "Copy" });
+			    copy.AddItemToList("1-1", "Value 1", false);
+			    copy.AddItemToList("2-1", "Value 2", false);
+			    copy.AddItemToList("3-1", "Value 3", true);
+			    copy.AddItemToList("4-1", "Value 4", true);
+			    copy.AddItemToList("5-1", "Denmark", false);
+			    copy.AddItemToList("6-1", "Germany", true);
+			    copy.AddItemToList("7-1", "French toast", false);
+
+			    copy.SelectionChanged(function(data)
+			    {
+			        updateSelected("nmulti4", data.Selection);
+			    }, true);
+
+			    // Slow fading
+			    slowFading = $("#nmultiselectboxes").NMultiSelect({ FadeSpeed: "slow", Title: "Slow fading" });
+			    slowFading.AddItemToList("1-1", "Value 1", false);
+			    slowFading.AddItemToList("2-1", "Value 2", false);
+			    slowFading.AddItemToList("3-1", "Value 3", true);
+			    slowFading.AddItemToList("4-1", "Value 4", true);
+			    slowFading.AddItemToList("5-1", "Denmark", false);
+			    slowFading.AddItemToList("6-1", "Germany", true);
+			    slowFading.AddItemToList("7-1", "French toast", false);
+
+			    slowFading.SelectionChanged(function(data)
+			    {
+			        updateSelected("nmulti5", data.Selection);
+			    }, true);
+
+			    // Custom name
+			    customName = $("#nmultiselectboxes").NMultiSelect({ Name: "MyCustomName", Title: "Custom name" });
+			    customName.AddItemToList("1-1", "Value 1", false);
+			    customName.AddItemToList("2-1", "Value 2", false);
+			    customName.AddItemToList("3-1", "Value 3", true);
+			    customName.AddItemToList("4-1", "Value 4", true);
+			    customName.AddItemToList("5-1", "Denmark", false);
+			    customName.AddItemToList("6-1", "Germany", true);
+			    customName.AddItemToList("7-1", "French toast", false);
+
+			    customName.SelectionChanged(function (data) {
+			        updateSelected("nmulti6", data.Selection);
+			    }, true);
+
+			    // Custom name
+			    selLimit = $("#nmultiselectboxes").NMultiSelect({ Title: "Selection limit", SelectionLimit: 3 });
+			    selLimit.AddItemToList("1-1", "Value 1", false);
+			    selLimit.AddItemToList("2-1", "Value 2", false);
+			    selLimit.AddItemToList("3-1", "Value 3", true);
+			    selLimit.AddItemToList("4-1", "Value 4", true);
+			    selLimit.AddItemToList("5-1", "Denmark", false);
+			    selLimit.AddItemToList("6-1", "Germany", true);
+			    selLimit.AddItemToList("7-1", "French toast", false);
+
+			    selLimit.SelectionChanged(function (data) {
+			        updateSelected("nmulti7", data.Selection);
+			    }, true);
+
+
+			    // Custom name
+			    selLimit = $("#nmultiselectboxes").NMultiSelect({ Title: "Selection limit", SelectionLimit: 4 });
+			    selLimit.AddItemToList("1-1", "Value 1", false);
+			    selLimit.AddItemToList("2-1", "Value 2", false);
+			    selLimit.AddItemToList("3-1", "Value 3", true);
+			    selLimit.AddItemToList("4-1", "Value 4", true);
+			    selLimit.AddItemToList("5-1", "Denmark", false);
+			    selLimit.AddItemToList("6-1", "Germany", true);
+			    selLimit.AddItemToList("7-1", "French toast", false);
+
+			    selLimit.SelectionChanged(function (data) {
+			        updateSelected("nmulti7", data.Selection);
+			    }, true);
+
+			    _getValues();
+			}
+		);
+    </script>
+
+</head>
+<body>
+    <form action="nms.1.5.1.html" method="get">
+    <div class="container">
+        <div class="box">
+            <h1>
+                NMultiSelect v. 1.5.2
+            </h1>
+            <p>
+                Right click to se the source code.
+            </p>
+        </div>
+        <div class="box">
+            <div id="nmultiselectboxes">
+            </div>
+        </div>
+        <div class="box floater">
+            <h2>
+                Values</h2>
+            <div>
+                <input type="submit" value="Submit selected values" /></div>
+            <div>
+                <p>
+                    Selected values:</p>
+                <ul id="boxes">
+                    <li id="nmulti1">Default config<ul>
+                    </ul>
+                    </li>
+                    <li id="nmulti2">Custom dimensions<ul>
+                    </ul>
+                    </li>
+                    <li id="nmulti3">Custom texts<ul>
+                    </ul>
+                    </li>
+                    <li id="nmulti4">Copy<ul>
+                    </ul>
+                    </li>
+                    <li id="nmulti5">Slow fading<ul>
+                    </ul>
+                    </li>
+                    <li id="nmulti6">Custom name<ul>
+                    </ul></li>
+                    <li id="nmulti7">Limit selection<ul>
+                    </ul>
+                    </li>
+                </ul>
+                <p>
+                    Posted values:</p>
+                <ul id="getValues">
+                </ul>
+            </div>
+        </div>
+    </div>
+    </form>
+</body>
+</html>
