@@ -9,7 +9,7 @@
 
     <script type="text/javascript" src="http://code.jdempster.com/jQuery.DisableTextSelect/jquery.disable.text.select.pack.js"></script>
 
-    <script type="text/javascript" src="http://nmultiselect.ndesoft.dk/scripts/jquery.nmultiselect.1.5.2.min.js"></script>
+    <script type="text/javascript" src="scripts/jquery.nmultiselect.1.5.2.js"></script>
 
     <script type="text/javascript">
         var defaultConf;
@@ -176,6 +176,21 @@
 			    selLimit.SelectionChanged(function (data) {
 			        updateSelected("nmulti7", data.Selection);
 			    }, true);
+				
+				// Disabled filter, add/remove all buttons, and multiselect:
+			    defaultConf = $("#nmultiselectboxes").NMultiSelect({ Title: "Disabled filter, add/remove all buttons, and multiselect", FilterText: null, EnableAddAll: false, EnableRemoveAll: false, EnableMultiSelect: false });
+			    defaultConf.AddItemToList("1-1", "Value 1", false);
+			    defaultConf.AddItemToList("2-1", "Value 2", false);
+			    defaultConf.AddItemToList("3-1", "Value 3", true);
+			    defaultConf.AddItemToList("4-1", "Value 4", true);
+			    defaultConf.AddItemToList("5-1", "Denmark", false);
+			    defaultConf.AddItemToList("6-1", "Germany", true);
+			    defaultConf.AddItemToList("7-1", "French toast", false);
+
+			    defaultConf.SelectionChanged(function(data)
+			    {
+			        updateSelected("nmulti8", data.Selection);
+			    },true);
 
 			    _getValues();
 			}
@@ -225,6 +240,9 @@
                     <li id="nmulti6">Custom name<ul>
                     </ul></li>
                     <li id="nmulti7">Limit selection<ul>
+                    </ul>
+                    </li>
+					<li id="nmulti8">Disabled filter and add/remove all buttons<ul>
                     </ul>
                     </li>
                 </ul>

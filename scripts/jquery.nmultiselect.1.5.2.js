@@ -43,9 +43,12 @@
             var settings = {
                 Name: "NMultiSelect_" + $.NMultiSelect.Instances,
                 Move: true,
-                FilterText: "filter",
+                FilterText: "filter", // Set to null to disable filters
                 AvailableText: "Available items:",
                 SelectedText: "Selected items:",
+				EnableAddAll: true,
+				EnableRemoveAll: true,
+				EnableMultiSelect: true,
                 Height: 150,
                 Width: 150,
                 FadeSpeed: "fast", // How fast would we wan't the fading to go?
@@ -271,6 +274,11 @@
              _item_click = function (e) {
                  /// <summary>Event handler being fired when item is being clicked.
                  /// </summary>
+				 if (!settings.EnableMultiSelect){
+					from.find('a.selected').toggleClass("selected");
+					to.find('a.selected').toggleClass("selected");
+				 }
+				 
                  $(this).toggleClass("selected");
              },
 
@@ -381,20 +389,24 @@
 
 
             // Bind event handlers:
-            add.bind('click.multiselect', { container: this }, _fromBox_dblClick);
-            addAll.bind('click.multiselect', { container: this }, _addAll_Click);
-            remove.bind('click.multiselect', { container: this }, _toBox_dblClick);
-            removeAll.bind('click.multiselect', { container: this }, _removeAll_Click);
+            add.bind('click.multiselect', { container: this }, _fromBox_dblClick); 
+			remove.bind('click.multiselect', { container: this }, _toBox_dblClick);
+			myForm.bind("submit.multiselect", { container: this }, _myForm_submit);
+			if (settings.EnableAddAll){
+				addAll.bind('click.multiselect', { container: this }, _addAll_Click);
+			}
+			if (settings.EnableRemoveAll){
+				removeAll.bind('click.multiselect', { container: this }, _removeAll_Click);
+			}
+			if (settings.FilterText !== null){
+				filterFrom.bind("focus.multiselect", { container: this }, _filterBox_focus);
+				filterTo.bind("focus.multiselect", { container: this }, _filterBox_focus);
+				filterFrom.bind("blur.multiselect", { container: this }, _filterBox_blur);
+				filterTo.bind("blur.multiselect", { container: this }, _filterBox_blur);
 
-            filterFrom.bind("focus.multiselect", { container: this }, _filterBox_focus);
-            filterTo.bind("focus.multiselect", { container: this }, _filterBox_focus);
-            filterFrom.bind("blur.multiselect", { container: this }, _filterBox_blur);
-            filterTo.bind("blur.multiselect", { container: this }, _filterBox_blur);
-
-            filterFrom.bind("keyup.multiselect", { container: this }, _filterFrom_keyUp);
-            filterTo.bind("keyup.multiselect", { container: this }, _filterTo_keyUp);
-
-            myForm.bind("submit.multiselect", { container: this }, _myForm_submit);
+				filterFrom.bind("keyup.multiselect", { container: this }, _filterFrom_keyUp);
+				filterTo.bind("keyup.multiselect", { container: this }, _filterTo_keyUp);
+			}
 
             // Append items:
             if (settings.Title !== null) {
@@ -410,16 +422,22 @@
             leftContainer.append(fromContainer);
             rightContainer.append(toContainer);
 
-            fromContainer.append(filterFrom);
-            toContainer.append(filterTo);
+			if (settings.FilterText !== null){
+				fromContainer.append(filterFrom);
+				toContainer.append(filterTo);
+			}
             fromContainer.append(from);
             toContainer.append(to);
 
             buttonContainer.append(fixButtonAlignment);
-            buttonContainer.append(add);
-            buttonContainer.append(addAll);
+            buttonContainer.append(add);	
+			if (settings.EnableAddAll){
+				buttonContainer.append(addAll);
+			}
+			if (settings.EnableRemoveAll){
+				buttonContainer.append(removeAll);
+			}
             buttonContainer.append(remove);
-            buttonContainer.append(removeAll);
             buttonContainer.append(selection);
             this.append(finish);
 
